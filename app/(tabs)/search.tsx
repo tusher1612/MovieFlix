@@ -7,6 +7,7 @@ import useFetch from "@/lib/custom-hooks/useFetch";
 import MovieApi from "@/lib/api/movieList";
 import MovieCard from "@/lib/components/MovieCard";
 import { useState,useEffect,useCallback } from "react";
+import { UpdateSearchTerm } from "@/lib/services/appwrite";
 
 
 
@@ -33,9 +34,17 @@ const Search = () => {
   
   };
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
+
+    
+    
+    const timeoutId = setTimeout(async() => {
       if (searchQuery.trim()) {
         loadMovies();
+        if (movies?.length! > 0 && movies?.[0]) {
+          console.log("updateSearchTerm Triggered")
+          await UpdateSearchTerm(searchQuery, movies[0]);
+        }
+
       } else {
         reset();
       }
@@ -43,24 +52,7 @@ const Search = () => {
   
     return () => clearTimeout(timeoutId); // cleanup previous timeout
   }, [searchQuery]);
-  
-  // Debounced search effect
-  // useEffect(() => {
-  //   const timeoutId = setTimeout(async () => {
-  //     if (searchQuery.trim()) {
-  //       await loadMovies();
-
-  //       // Call updateSearchCount only if there are results
-  //       if (movies?.length! > 0 && movies?.[0]) {
-  //         await updateSearchCount(searchQuery, movies[0]);
-  //       }
-  //     } else {
-  //       reset();
-  //     }
-  //   }, 500);
-
-  //   return () => clearTimeout(timeoutId);
-  // }, [searchQuery]);
+ 
 
   return (
     <View className="flex-1 bg-primary">

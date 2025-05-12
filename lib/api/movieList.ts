@@ -7,7 +7,7 @@ import { TMDB_CONFIG } from "../constants/tmd-config";
 
 
 const getAllMovies=async({query}:{query:string}):Promise<Movie[]>=>{
-    console.log("Query triggered ",query)
+
    const endpoint=query ?   `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURIComponent(query)}`:`${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc`;
    const response=await fetch(endpoint,{
     method:'GET',
