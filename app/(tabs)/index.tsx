@@ -6,6 +6,8 @@ import SearchBar from "@/lib/components/SearchBar";
 import useFetch from "@/lib/custom-hooks/useFetch";
 import MovieApi from "@/lib/api/movieList";
 import MovieCard from "@/lib/components/MovieCard";
+import { appWriteServices } from "@/lib/services/appwrite";
+import TrendingCard from "@/lib/components/TrendingCard";
 
 export default function Home() {
   const router = useRouter();
@@ -14,6 +16,12 @@ export default function Home() {
     loading: moviesLoading,
     error: moviesError,
   } = useFetch(() => MovieApi.getAllMovies({ query: "" }));
+
+  const {
+    data: trendingMovies,
+    loading: trendingMovieLoader,
+    error: trendingMoviesError,
+  } = useFetch(() => appWriteServices.getAllTrendingMovies());
 
 
   return (
@@ -37,8 +45,8 @@ export default function Home() {
             color="#0000ff"
             className="mt-10 self-center"
           />
-        ) : moviesError  ? (
-          <Text>Error: {moviesError?.message }</Text>
+        ) : moviesError  || trendingMoviesError ? (
+          <Text>Error: {moviesError?.message  || trendingMoviesError?.message}</Text>
         ) : (
           <View className="flex-1 mt-5">
             <SearchBar
@@ -47,7 +55,7 @@ export default function Home() {
               }}
               placeholder="Search for a movie"
             />
-{/* 
+
             {trendingMovies && (
               <View className="mt-10">
                 <Text className="text-lg text-white font-bold mb-3">
@@ -68,7 +76,7 @@ export default function Home() {
                   ItemSeparatorComponent={() => <View className="w-4" />}
                 />
               </View>
-            )} */}
+            )}
 
             <>
               <Text className="text-lg text-white font-bold mt-5 mb-3">
