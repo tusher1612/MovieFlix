@@ -48,10 +48,10 @@ const formattedDate = new Date(date).toLocaleDateString("en-US", {
       >
         {headline}
       </Text>
-      <Text  className="text-sm font-normal mt-2 text-light-100  ">{abstract}</Text>
-        <Text  className="text-sm font-bold mt-2 text-light-200  ">Author:  <Text className="font-light">{author} </Text></Text>
+      <Text  className="text-sm font-normal mt-2 text-light-200  ">{abstract}</Text>
+        <Text  className="text-sm font-bold mt-2 text-light-200  ">Author:  <Text className="font-light ">{author} </Text></Text>
      <View className="flex-row  items-center  justify-between">
-<Text  className="text-sm font-bold mt-2 text-light-200">{section}</Text>
+<Text  className="text-sm font-bold mt-2 text-light-100">{section}</Text>
 <Text  className="text-sm font-bold mt-2 text-light-200">{formattedDate}</Text>
       </View>
      

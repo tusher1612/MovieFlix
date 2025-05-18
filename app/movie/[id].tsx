@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   ScrollView,
   TouchableOpacity,
+  Modal
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { icons } from "@/lib/constants/icons";
 import useFetch from "@/lib/custom-hooks/useFetch";
 import MovieApi from "@/lib/api/movieList";
+import { useState } from "react";
 
 
 interface MovieInfoProps {
@@ -30,6 +32,7 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 
 const Details = () => {
   const router = useRouter();
+    const [isModalVisible, setModalVisible] = useState(false);
   const { id } = useLocalSearchParams();
 
   const { data: movie, loading } = useFetch(() =>
@@ -42,6 +45,17 @@ const Details = () => {
         <ActivityIndicator />
       </SafeAreaView>
     );
+
+
+  // Handle Plus Icon Press
+  const handlePlusPress = () => {
+    console.log("Plus Icon Pressed");
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
   return (
     <View className="bg-primary flex-1">
@@ -66,11 +80,44 @@ const Details = () => {
 
         <View className="flex-col items-start justify-center mt-5 px-5">
           <Text className="text-white font-bold text-xl">{movie?.title}</Text>
+          <View className="flex-row items-center  justify-between w-full">
           <View className="flex-row items-center gap-x-1 mt-2">
             <Text className="text-light-200 text-sm">
               {movie?.release_date?.split("-")[0]} •
             </Text>
             <Text className="text-light-200 text-sm">{movie?.runtime}m</Text>
+
+           </View>
+<TouchableOpacity onPress={handlePlusPress} activeOpacity={0.8}>
+  <Text className="text-white font-bold text-3xl p-2">+</Text>
+</TouchableOpacity>
+
+
+{/* //modal  */}
+
+<Modal
+        visible={isModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={closeModal}
+      >
+        <View className="flex-1 justify-center items-center bg-black/70">
+          <View className="bg-navigation_primary p-6 rounded-xl w-[80%]">
+            <Text className="text-lg font-bold mb-8 text-light-200 ">{movie?.title} has been added to your favorites list</Text>
+              <View className="items-center">
+           <TouchableOpacity onPress={closeModal}>
+        <Text className="bg-accent font-semibold text-white pt-2 pl-3 pr-3 w-24 pb-2 text-center rounded-md">
+          Close
+        </Text>
+         </TouchableOpacity>
+         </View>
+          </View>
+        </View>
+      </Modal>
+
+          
+
+
           </View>
 
           <View className="flex-row items-center bg-dark-100 px-2 py-1 rounded-md gap-x-1 mt-2">
