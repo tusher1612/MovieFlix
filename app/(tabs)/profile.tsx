@@ -6,9 +6,9 @@ export default function Profile() {
 
   return (
     <View
-    className="flex-1 justify-center items-center"
+    className="h-screen bg-primary flex-1 justify-center items-center"
     >
-      <Text className="text-2xl font-bold text-secondary">Profile </Text>
+      <Text className="text-2xl font-bold text-white">Profile </Text>
     </View>
   )
 }

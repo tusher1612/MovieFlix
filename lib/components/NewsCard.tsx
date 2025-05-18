@@ -31,7 +31,7 @@ const formattedDate = new Date(date).toLocaleDateString("en-US", {
   };
 
   return (
-    <View className="bg-navigation_primary  rounded-2xl">  
+    <View className="bg-navigation_primary rounded-2xl">  
      
     <TouchableOpacity
       className="w-full relative p-5"

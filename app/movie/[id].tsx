@@ -88,8 +88,8 @@ const Details = () => {
             <Text className="text-light-200 text-sm">{movie?.runtime}m</Text>
 
            </View>
-<TouchableOpacity onPress={handlePlusPress} activeOpacity={0.8}>
-  <Text className="text-white font-bold text-3xl p-2">+</Text>
+<TouchableOpacity onPress={handlePlusPress} activeOpacity={0.4}>
+  <Text className="text-accent  font-bold text-3xl p-2">+</Text>
 </TouchableOpacity>
 
 
