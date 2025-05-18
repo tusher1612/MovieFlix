@@ -1,5 +1,7 @@
 
 
+
+
 import { TMDB_CONFIG } from "../constants/tmd-config";
 
 
@@ -47,9 +49,28 @@ export const fetchMovieDetails = async (
     throw error;
   }
 };
+
+//news api 
+
+const gelAllMovieNews=async():Promise<TrendingMovieArticle[]>=>{
+  const response= await fetch(`${TMDB_CONFIG.NEWS_KEY}`)
+  const newsData= await response.json()
+
+return newsData.news
+ 
+}
+
+
+
+
+
+
+
+
 const MovieApi={
     getAllMovies,
-    fetchMovieDetails
+    fetchMovieDetails,
+    gelAllMovieNews
 }
 
 

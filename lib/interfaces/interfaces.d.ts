@@ -1,3 +1,4 @@
+
 interface Movie {
   id: number;
   title: string;
@@ -74,4 +75,19 @@ interface MovieDetails {
 interface TrendingCardProps {
   movie: TrendingMovie;
   index: number;
+}
+interface NewsCardProps{
+   news: TrendingMovieArticle;
+
+}
+interface TrendingMovieArticle {
+  id: number;
+  headline: string;
+  abstract: string;
+  body: string; 
+  author: string;
+  section: string;
+  date: string; 
+  article_uri: string;
+  pfd_uri: string;
 }

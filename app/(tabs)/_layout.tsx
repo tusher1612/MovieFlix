@@ -54,13 +54,13 @@ const _layout = () => {
    }}
    />
          <Tabs.Screen 
-   name='saved'
+   name='news'
    options={{
-    title:"Saved",
+    title:"News",
     headerShown:false,
     tabBarIcon:({focused})=>(
     
-        <NavigationTab navTitle='Saved'  icon={icons.save} focused={focused}/>
+        <NavigationTab navTitle='News'  icon={icons.news} focused={focused}/>
       
      )
    }}

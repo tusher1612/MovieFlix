@@ -18,7 +18,7 @@ const NavigationTab = ({ focused, navTitle, icon }: Props) => {
           source={images.highlight}
           className="flex flex-row justify-center items-center w-full min-w-[112px] min-h-16 mt-4 rounded-full overflow-hidden"
         >
-          <Image source={icon} tintColor="#151312" className="w-5 h-5" />
+          <Image source={icon} tintColor="#151312" className={navTitle==='News' ?"w-6 h-6":"w-5 h-5"} />
           <Text className="text-secondary text-base font-semibold ml-2">{navTitle}</Text>
         </ImageBackground>
       </View>
