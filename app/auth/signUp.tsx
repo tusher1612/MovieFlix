@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useLocalSearchParams,useRouter } from 'expo-router'
 import { images } from "@/lib/constants/images";
 
-export default function SingIn() {
+export default function SignUp() {
  const router = useRouter();
  const [name,setName]=useState('');
  const [email,setEmail]=useState('');
@@ -24,10 +24,15 @@ export default function SingIn() {
         className="text-2xl font-bold text-white mt-4"
         onPress={() => router.push('/auth/signIn')}
       >
-        Sign In
+        Sing Up
       </Text>
 
-
+<TextInput 
+className='border-none border-b-2 border-accent w-80 mt-10 p-4 text-white  rounded-lg'
+placeholder='Name'
+onChangeText={setName}
+value={name}
+/>
 <TextInput 
 className='border-none border-b-2 border-accent w-80 mt-10 p-4 text-white  rounded-lg'
 placeholder='Email'
@@ -50,13 +55,13 @@ value={password}
         onPress={router.back}
       >
    
-        <Text className="text-white font-semibold text-base">Sign{''} In</Text>
+        <Text className="text-white font-semibold text-base">Sing{''} In</Text>
       </TouchableOpacity>
 
-     <Text className='text-white mt-2 p-4' onPress={()=>router.push('/auth/signUp')}>
-        Don't have an account yet ? {' '}
+     <Text className='text-white mt-2 p-4' onPress={()=>router.push('/auth/signIn')}>
+        Already have an account ? {' '}
         <Text  className='text-accent' >
-          SignUp
+          SignIn
         </Text>
       </Text>
 

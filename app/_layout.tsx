@@ -28,6 +28,13 @@ export default function RootLayout() {
             headerShown: false,
           }}
         />
+               <Stack.Screen
+          name="auth/signUp"
+          options={{
+            headerShown: false,
+          }}
+        />
+
 
 
       </Stack>
