@@ -8,6 +8,7 @@ import MovieApi from "@/lib/api/movieList";
 import MovieCard from "@/lib/components/MovieCard";
 import { appWriteServices } from "@/lib/services/appwrite";
 import TrendingCard from "@/lib/components/TrendingCard";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();

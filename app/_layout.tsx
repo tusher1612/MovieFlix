@@ -22,6 +22,12 @@ export default function RootLayout() {
             headerShown: false,
           }}
         />
+            <Stack.Screen
+          name="auth/signIn"
+          options={{
+            headerShown: false,
+          }}
+        />
 
 
       </Stack>
