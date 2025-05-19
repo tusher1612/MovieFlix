@@ -20,13 +20,15 @@ const account = new Account(client);
 //user Registration
 const registerUser=async(email:string, password:string, name:string)=> {
   try {
-    const response = await account.create(
-      "unique()", // User ID, "unique()" lets Appwrite generate one
-      email,
-      password,
-      name
-    );
-    console.log("Registration successful:", response);
+
+    const response =    await database.createDocument(DATABASE_ID, SAVED_MOVIES_COLLECTION_ID, ID.unique(), {
+
+      name:name ,
+        email: email,
+        password:password
+      });
+
+    console.log("Registration successful:", JSON.stringify(response,null,2));
     return response;
   } catch (error) {
     console.error("Registration failed:", error);
@@ -35,16 +37,26 @@ const registerUser=async(email:string, password:string, name:string)=> {
 }
 
 //user login
-const  loginUser= async(email:string, password:string)=> {
+const loginUser = async (email: string, password: string) => {
   try {
-    const session = await account.createSession(email, password);
-    console.log("Login successful:", session);
-    return session;
+    const result = await database.listDocuments(DATABASE_ID, SAVED_MOVIES_COLLECTION_ID);
+
+    const matchedUser = result.documents.find(
+      (user) => user.email === email && user.password === password
+    );
+
+    if (matchedUser) {
+      console.log("Login successful:", JSON.stringify(matchedUser, null, 2));
+      return matchedUser;
+    } else {
+      throw new Error("Invalid email or password.");
+    }
   } catch (error) {
     console.error("Login failed:", error);
     throw error;
   }
-}
+};
+
 
 
 

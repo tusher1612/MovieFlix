@@ -12,9 +12,15 @@ export default function SingIn() {
 
   const handleLogin = async () => {
     try {
-      await appWriteServices.loginUser(email, password);
-      Alert.alert("Success", "Logged in successfully");
-      router.push('/profile')
+     const result = await appWriteServices.loginUser(email, password);
+     const {name}=result;
+  
+     if (result){
+   Alert.alert("Success", "Log in successfully");
+   router.push('/profile')
+     }
+   
+  
     } catch (e) {
       Alert.alert("Log in failed");
     }

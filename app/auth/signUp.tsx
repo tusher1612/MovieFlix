@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useLocalSearchParams,useRouter } from 'expo-router'
 import { images } from "@/lib/constants/images";
 import { appWriteServices } from '@/lib/services/appwrite';
-
+import { v4 as uuidv4 } from 'uuid';
 export default function SignUp() {
  const router = useRouter();
  const [name,setName]=useState('');
@@ -69,7 +69,7 @@ value={password}
         onPress={handleRegister}
       >
    
-        <Text className="text-white font-semibold text-base">Sing{''} In</Text>
+        <Text className="text-white font-semibold text-base">Sing{''} Up</Text>
       </TouchableOpacity>
 
      <Text className='text-white mt-2 p-4' onPress={()=>router.push('/auth/signIn')}>
