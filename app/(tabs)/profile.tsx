@@ -1,7 +1,8 @@
-import { View, Text ,Image, TextInput,TouchableOpacity} from 'react-native'
+import { View, Text ,Image, TextInput,TouchableOpacity, Linking} from 'react-native'
 import React, { useState } from 'react'
 import { Link, useLocalSearchParams,useRouter } from 'expo-router'
 import { images } from "@/lib/constants/images";
+
 
 
 export default function Profile() {
@@ -9,6 +10,13 @@ export default function Profile() {
  const [name,setName]=useState('');
  const [email,setEmail]=useState('');
  const [password,setPassword]=useState('');
+
+const [loggedIn,setLoggedIn]=useState(false);
+// if(!loggedIn) {
+//   router.push('/auth/signIn')
+
+// }
+
   return (
     <View
     className="h-screen bg-primary "
@@ -20,19 +28,8 @@ export default function Profile() {
         resizeMode="cover"
       />
 <View className="flex-1 items-center justify-center">
-<Text className='text-white'>Profile</Text>
-
-
-
-<Link href={'/auth/signIn'} className='mt-10'>
-<Text className='text-white '>SingIn</Text>
-
-</Link>
-
-<Link href={'/auth/signUp'} className='mt-10'>
-<Text className='text-white '>SingUp</Text>
-
-</Link>
+ <Text className='font-bold text-x text-white text-lg'>Welcome  <Text className='text-accent'>Tusher</Text></Text>
+ <Link href={'/auth/signIn'}><Text className='text-white'>SingIn </Text> </Link>
   </View>
     </View>
   )

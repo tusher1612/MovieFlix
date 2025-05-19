@@ -1,13 +1,28 @@
-import { View, Text ,Image, TextInput,TouchableOpacity} from 'react-native'
+import { View, Text ,Image, TextInput,TouchableOpacity,Alert} from 'react-native'
 import React, { useState } from 'react'
 import { useLocalSearchParams,useRouter } from 'expo-router'
 import { images } from "@/lib/constants/images";
+import { appWriteServices } from '@/lib/services/appwrite';
 
 export default function SingIn() {
  const router = useRouter();
  const [name,setName]=useState('');
  const [email,setEmail]=useState('');
  const [password,setPassword]=useState('');
+
+  const handleLogin = async () => {
+    try {
+      await appWriteServices.loginUser(email, password);
+      Alert.alert("Success", "Logged in successfully");
+      router.push('/profile')
+    } catch (e) {
+      Alert.alert("Log in failed");
+    }
+  };
+
+
+
+
   return (
     <View
     className="h-screen bg-primary "
@@ -47,7 +62,7 @@ value={password}
 
       <TouchableOpacity
         className="bg-accent rounded-lg  flex flex-row items-center justify-center w-80 h-14  mt-10"
-        onPress={router.back}
+        onPress={handleLogin}
       >
    
         <Text className="text-white font-semibold text-base">Sign{''} In</Text>

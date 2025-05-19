@@ -2,7 +2,7 @@
 
 //track the searches made by the user
 
-import {Client,Databases, ID, Query} from 'react-native-appwrite'
+import {Client,Databases, ID, Query,Account} from 'react-native-appwrite'
 
 
 
@@ -13,6 +13,41 @@ const client = new Client().setEndpoint('https://cloud.appwrite.io/v1').setProje
 
 
 const database= new Databases(client);
+const account = new Account(client);
+
+
+
+//user Registration
+const registerUser=async(email:string, password:string, name:string)=> {
+  try {
+    const response = await account.create(
+      "unique()", // User ID, "unique()" lets Appwrite generate one
+      email,
+      password,
+      name
+    );
+    console.log("Registration successful:", response);
+    return response;
+  } catch (error) {
+    console.error("Registration failed:", error);
+    throw error;
+  }
+}
+
+//user login
+const  loginUser= async(email:string, password:string)=> {
+  try {
+    const session = await account.createSession(email, password);
+    console.log("Login successful:", session);
+    return session;
+  } catch (error) {
+    console.error("Login failed:", error);
+    throw error;
+  }
+}
+
+
+
 //Saved movies 
 const SavedMovies = async ( movie: Movie) => {
   try {
@@ -82,9 +117,11 @@ catch (error) {
 
 
 export const  appWriteServices={
+  loginUser,
+  registerUser,
   UpdateSearchTerm,
-getAllTrendingMovies,
-SavedMovies
+   getAllTrendingMovies,
+ SavedMovies
 }
 
 

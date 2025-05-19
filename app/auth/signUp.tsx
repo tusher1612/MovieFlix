@@ -1,13 +1,27 @@
-import { View, Text ,Image, TextInput,TouchableOpacity} from 'react-native'
+import { View, Text ,Image, TextInput,TouchableOpacity,Alert} from 'react-native'
 import React, { useState } from 'react'
 import { useLocalSearchParams,useRouter } from 'expo-router'
 import { images } from "@/lib/constants/images";
+import { appWriteServices } from '@/lib/services/appwrite';
 
 export default function SignUp() {
  const router = useRouter();
  const [name,setName]=useState('');
  const [email,setEmail]=useState('');
  const [password,setPassword]=useState('');
+
+ const handleRegister = async () => {
+    try {
+      await appWriteServices.registerUser(email, password, name);
+      Alert.alert("Success", "User registered successfully");
+      router.push('/auth/signIn')
+    } catch (e) {
+      Alert.alert("Registration Failed");
+    }
+  };
+
+
+
   return (
     <View
     className="h-screen bg-primary "
@@ -52,7 +66,7 @@ value={password}
 
       <TouchableOpacity
         className="bg-accent rounded-lg  flex flex-row items-center justify-center w-80 h-14  mt-10"
-        onPress={router.back}
+        onPress={handleRegister}
       >
    
         <Text className="text-white font-semibold text-base">Sing{''} In</Text>
