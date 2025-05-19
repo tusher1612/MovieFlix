@@ -47,6 +47,7 @@ const loginUser = async (email: string, password: string) => {
 
     if (matchedUser) {
       console.log("Login successful:", JSON.stringify(matchedUser, null, 2));
+      
       return matchedUser;
     } else {
       throw new Error("Invalid email or password.");

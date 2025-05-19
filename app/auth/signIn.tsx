@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useLocalSearchParams,useRouter } from 'expo-router'
 import { images } from "@/lib/constants/images";
 import { appWriteServices } from '@/lib/services/appwrite';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function SingIn() {
  const router = useRouter();
  const [name,setName]=useState('');
@@ -13,11 +13,12 @@ export default function SingIn() {
   const handleLogin = async () => {
     try {
      const result = await appWriteServices.loginUser(email, password);
-     const {name}=result;
-  
+     const {$id,name}=result;
+  console.log("ResultId",$id)
      if (result){
+         await AsyncStorage.setItem('userId', $id);
    Alert.alert("Success", "Log in successfully");
-   router.push('/profile')
+   router.push(`/profile?name=${name}`)
      }
    
   
