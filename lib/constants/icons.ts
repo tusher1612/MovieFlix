@@ -7,6 +7,7 @@ import star from "@/lib/assets/icons/star.png";
 import play from "@/lib/assets/icons/play.png";
 import arrow from "@/lib/assets/icons/arrow.png";
 import news from "@/lib/assets/icons/messages.png";
+import logout from "@/lib/assets/icons/logout.png";
 export const icons = {
   home,
   search,
@@ -16,5 +17,6 @@ export const icons = {
   star,
   play,
   arrow,
-  news
+  news,
+  logout
 };

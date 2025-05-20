@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { Link, useLocalSearchParams,useRouter } from 'expo-router'
 import { images } from "@/lib/constants/images";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { icons } from '@/lib/constants/icons';
 
 
 export default function Profile() {
 const router=useRouter();
-//  const { name } = useLocalSearchParams();
 const [userName,setUserName]=useState<string | null>('');
 useEffect(() => {
   const fetchUserId = async () => {
@@ -49,10 +49,20 @@ const handleLogOut = async ()=>{
         className="flex-1 absolute w-full z-0"
         resizeMode="cover"
       />
-<View className="flex-1 items-center justify-center">
- <Text className='font-bold text-x text-white text-lg'>Welcome  <Text className='text-accent'>{userName}</Text></Text>
- <Text className='text-white mt-5 font-bold text-xl' onPress={handleLogOut}>LogOut </Text> 
+
+
+ <View className='text-white mt-5 font-bold text-xl flex-row  items-center justify-between h-52 p-6'>
+   <Text className='font-bold text-x text-white text-lg'>Welcome  <Text className='text-accent'>{userName}</Text></Text>
+  <TouchableOpacity onPress={handleLogOut}>
+<Image source={icons.logout}  />
+  </TouchableOpacity>
   </View>
+
+
+
+
+
+
     </View>
   )
 }
