@@ -16,6 +16,21 @@ interface Movie {
   vote_count: number;
 }
 
+interface FavoriteMovie {
+  title: string;
+  movie_id: number;
+  poster_url: string;
+  userId: string;
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: string[]; 
+  $databaseId: string;
+  $collectionId: string;
+}
+
+
+
 interface TrendingMovie {
   searchTerm: string;
   movie_id: number;

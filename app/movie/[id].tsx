@@ -14,7 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { icons } from "@/lib/constants/icons";
 import useFetch from "@/lib/custom-hooks/useFetch";
 import MovieApi from "@/lib/api/movieList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { appWriteServices } from "@/lib/services/appwrite";
 
@@ -34,35 +34,20 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 
 const Details = () => {
   const router = useRouter();
-    const [isModalVisible, setModalVisible] = useState(false);
+    const [isFavorite, setIsFavorite] = useState<boolean | null>();
   const { id } = useLocalSearchParams();
-
+ const [userId,setUserId]=useState<string | null>('');
+ const [movieId,setMovieId]=useState();
   const { data: movie, loading } = useFetch(() =>
     MovieApi.fetchMovieDetails(id as string)
   );
-
-  if (loading)
-    return (
-      <SafeAreaView className="bg-primary flex-1">
-        <ActivityIndicator />
-      </SafeAreaView>
-    );
-
-
-  // Handle Plus Icon Press
-  const handlePlusPress = () => {
-    console.log("Plus Icon Pressed");
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+ 
+const{data:favoriteMovies,loading:favoriteLoading}=useFetch(()=>appWriteServices.findMovie(Number(id)));
 
 
 
-//fetching user Id 
 
+//tracking user session 
 const handleMovieAdd=async()=>{
     try {
       const userId = await AsyncStorage.getItem('userId');
@@ -71,6 +56,7 @@ const handleMovieAdd=async()=>{
         console.log("User is logged in:", userId);
      if (movie !== null) {
        appWriteServices.saveSingleMovie(movie,userId)
+       setIsFavorite(true); 
         }
      
       } else {
@@ -83,6 +69,19 @@ const handleMovieAdd=async()=>{
     }
 
 }
+
+
+
+
+
+
+  if (loading || favoriteLoading)
+    return (
+      <SafeAreaView className="bg-primary flex-1">
+        <ActivityIndicator />
+      </SafeAreaView>
+    );
+
 
 
   return (
@@ -116,35 +115,14 @@ const handleMovieAdd=async()=>{
             <Text className="text-light-200 text-sm">{movie?.runtime}m</Text>
 
            </View>
-<TouchableOpacity onPress={handlePlusPress} activeOpacity={0.4}>
-  <Text className="text-accent  font-bold text-3xl p-2" onPress={handleMovieAdd}>+</Text>
-</TouchableOpacity>
 
-
-{/* //modal  */}
-
-<Modal
-        visible={isModalVisible}
-        transparent
-        animationType="slide"
-        onRequestClose={closeModal}
-      >
-        <View className="flex-1 justify-center items-center bg-black/70">
-          <View className="bg-navigation_primary p-6 rounded-xl w-[80%]">
-            <Text className="text-lg font-bold mb-8 text-light-200 ">{movie?.title} has been added to your favorites list</Text>
-              <View className="items-center">
-           <TouchableOpacity onPress={closeModal}>
-        <Text className="bg-accent font-semibold text-white pt-2 pl-3 pr-3 w-24 pb-2 text-center rounded-md">
-          Close
-        </Text>
-         </TouchableOpacity>
-         </View>
-          </View>
-        </View>
-      </Modal>
-
-          
-
+              {
+              (favoriteMovies &&  favoriteMovies?.length >0)  ? (<TouchableOpacity onPress={()=>{}} activeOpacity={0.4}>
+                <Text className="text-accent  font-bold text-4xl p-2 " >-</Text>
+              </TouchableOpacity> ) : (<TouchableOpacity onPress={handleMovieAdd} activeOpacity={0.4}>
+                <Text className="text-accent  font-bold text-4xl p-2" >+</Text>
+              </TouchableOpacity>)
+              }
 
           </View>
 

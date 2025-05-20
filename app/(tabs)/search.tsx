@@ -34,9 +34,6 @@ const Search = () => {
   
   };
   useEffect(() => {
-
-    
-    
     const timeoutId = setTimeout(async() => {
       if (searchQuery.trim()) {
         loadMovies();

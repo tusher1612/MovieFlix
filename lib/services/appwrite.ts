@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 //track the searches made by the user
 
 import {Client,Databases, ID, Query,Account} from 'react-native-appwrite'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const DATABASE_ID=process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
@@ -66,8 +66,20 @@ const loginUser = async (email: string, password: string) => {
 //favorite movies 
 const saveSingleMovie = async ( movie: MovieDetails,userId:string) => {
   try {
-   
-      await database.createDocument(DATABASE_ID, FAVORITE_MOVIE_COLLECTION_ID, ID.unique(), {
+      const result = await database.listDocuments(DATABASE_ID, FAVORITE_MOVIE_COLLECTION_ID, [
+      Query.equal('userId', userId),
+      Query.equal('movie_id',movie.id)
+    ]);
+    if (result){
+   Alert.alert(
+  "Already Added",
+  "This movie is already in your favorites list.",
+  [{ text: "OK", style: "default" }]
+);
+console.log("saveSingleMovie:",result)
+    }
+    else {
+            await database.createDocument(DATABASE_ID, FAVORITE_MOVIE_COLLECTION_ID, ID.unique(), {
         title: movie.title,
         poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
          movie_id: movie.id,
@@ -78,12 +90,64 @@ const saveSingleMovie = async ( movie: MovieDetails,userId:string) => {
   "The movie has been saved to your favorites.",
   [{ text: "OK", style: "default" }]
 );
-
-
+    }
     }
    catch (error) {
-    console.error(error);
+
+Alert.alert(
+  "Error",
+  `${error}`,
+  [
+    {
+      text: "OK",
+      style: "destructive",
+    },
+  ]
+);
+
+
+
     throw new Error('Something went wrong while  saving the movie.');
+  }
+};
+
+
+//find specific movie exist or not
+const findMovie = async (movieId: number): Promise<FavoriteMovie[]| undefined> => {
+  try {
+    const userId = await AsyncStorage.getItem('userId');
+
+    if (!userId) {
+      console.warn("No userId found in AsyncStorage.");
+      return []; 
+    }
+
+    const result = await database.listDocuments(
+      DATABASE_ID,
+      FAVORITE_MOVIE_COLLECTION_ID,
+      [
+        Query.equal('userId', userId),
+        Query.equal('movie_id', movieId),
+      ]
+    );
+
+    console.log("Result:", JSON.stringify(result.documents, null, 2));
+    console.log("Movie found");
+    return result.documents as unknown as FavoriteMovie[]
+  } catch (error) {
+    Alert.alert(
+      "Error",
+      "Something went wrong while checking your favorites.",
+      [
+        {
+          text: "OK",
+          style: "destructive",
+        },
+      ]
+    );
+    
+    console.error("findMovie error:", error); 
+    return []; // Return an empty array on error to maintain consistency
   }
 };
 
@@ -91,6 +155,9 @@ const saveSingleMovie = async ( movie: MovieDetails,userId:string) => {
 
 
 
+
+
+// it updates the search term for the trending movie 
  const UpdateSearchTerm = async (query: string, movie: Movie) => {
   try {
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
@@ -143,7 +210,8 @@ export const  appWriteServices={
   registerUser,
   UpdateSearchTerm,
    getAllTrendingMovies,
-saveSingleMovie
+saveSingleMovie,
+findMovie
 }
 
 
