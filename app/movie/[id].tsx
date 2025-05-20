@@ -5,7 +5,8 @@ import {
   ActivityIndicator,
   ScrollView,
   TouchableOpacity,
-  Modal
+  Modal,
+  Alert
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,7 +15,8 @@ import { icons } from "@/lib/constants/icons";
 import useFetch from "@/lib/custom-hooks/useFetch";
 import MovieApi from "@/lib/api/movieList";
 import { useState } from "react";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { appWriteServices } from "@/lib/services/appwrite";
 
 interface MovieInfoProps {
   label: string;
@@ -57,6 +59,32 @@ const Details = () => {
     setModalVisible(false);
   };
 
+
+
+//fetching user Id 
+
+const handleMovieAdd=async()=>{
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      console.log("UserId:",userId)
+      if (userId) {
+        console.log("User is logged in:", userId);
+     if (movie !== null) {
+       appWriteServices.saveSingleMovie(movie,userId)
+        }
+     
+      } else {
+        console.log("No user found.");
+          
+        router.replace('/auth/signIn');
+      }
+    } catch (error) {
+      console.error("Failed to get userId:", error);
+    }
+
+}
+
+
   return (
     <View className="bg-primary flex-1">
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
@@ -89,7 +117,7 @@ const Details = () => {
 
            </View>
 <TouchableOpacity onPress={handlePlusPress} activeOpacity={0.4}>
-  <Text className="text-accent  font-bold text-3xl p-2">+</Text>
+  <Text className="text-accent  font-bold text-3xl p-2" onPress={handleMovieAdd}>+</Text>
 </TouchableOpacity>
 
 

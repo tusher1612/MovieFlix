@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 
 
 //track the searches made by the user
@@ -9,6 +10,7 @@ import {Client,Databases, ID, Query,Account} from 'react-native-appwrite'
 const DATABASE_ID=process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID=process.env.EXPO_PUBLIC_APPWRITE_COLLECTION_ID!;
 const SAVED_MOVIES_COLLECTION_ID=process.env.EXPO_PUBLIC_APPWRITE_SAVED_MOVIES_COLLECTION_ID!;
+const FAVORITE_MOVIE_COLLECTION_ID=process.env.EXPO_PUBLIC_APPWRITE_SAVED_FAVORITE_MOVIES_COLLECTION_ID!;
 const client = new Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!)
 
 
@@ -61,15 +63,22 @@ const loginUser = async (email: string, password: string) => {
 
 
 
-//Saved movies 
-const SavedMovies = async ( movie: Movie) => {
+//favorite movies 
+const saveSingleMovie = async ( movie: MovieDetails,userId:string) => {
   try {
    
-      await database.createDocument(DATABASE_ID, SAVED_MOVIES_COLLECTION_ID, ID.unique(), {
+      await database.createDocument(DATABASE_ID, FAVORITE_MOVIE_COLLECTION_ID, ID.unique(), {
         title: movie.title,
         poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-         movie_id: movie.id
+         movie_id: movie.id,
+         userId:userId
       });
+  Alert.alert(
+  "Success",
+  "The movie has been saved to your favorites.",
+  [{ text: "OK", style: "default" }]
+);
+
 
     }
    catch (error) {
@@ -134,7 +143,7 @@ export const  appWriteServices={
   registerUser,
   UpdateSearchTerm,
    getAllTrendingMovies,
- SavedMovies
+saveSingleMovie
 }
 
 

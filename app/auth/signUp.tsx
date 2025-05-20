@@ -13,10 +13,19 @@ export default function SignUp() {
  const handleRegister = async () => {
     try {
       await appWriteServices.registerUser(email, password, name);
-      Alert.alert("Success", "User registered successfully");
-      router.push('/auth/signIn')
+     Alert.alert(
+  "Registration Successful",
+  "Your account has been created successfully.",
+  [{ text: "OK", style: "default" }]
+);
+router.replace('/auth/signIn')
     } catch (e) {
-      Alert.alert("Registration Failed");
+  Alert.alert(
+  "Registration Failed",
+  "We were unable to create your account. Please try again later.",
+  [{ text: "OK", style: "default" }]
+);
+
     }
   };
 

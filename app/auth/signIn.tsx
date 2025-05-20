@@ -17,13 +17,24 @@ export default function SingIn() {
   console.log("ResultId",$id)
      if (result){
          await AsyncStorage.setItem('userId', $id);
-   Alert.alert("Success", "Log in successfully");
-   router.push(`/profile?name=${name}`)
+         await AsyncStorage.setItem('userName',name);
+ Alert.alert(
+  "Login Successful",
+  "You have been logged in successfully.",
+  [{ text: "OK", style: "default" }]
+);
+
+   router.replace("/profile")
      }
    
   
     } catch (e) {
-      Alert.alert("Log in failed");
+     Alert.alert(
+  "Login Failed",
+  "Please check your credentials and try again.",
+  [{ text: "OK", style: "default" }]
+);
+
     }
   };
 
