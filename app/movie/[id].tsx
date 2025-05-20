@@ -34,7 +34,6 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => (
 
 const Details = () => {
   const router = useRouter();
-    const [isFavorite, setIsFavorite] = useState<boolean | null>();
   const { id } = useLocalSearchParams();
  const [userId,setUserId]=useState<string | null>('');
  const [movieId,setMovieId]=useState();
@@ -47,7 +46,7 @@ const{data:favoriteMovies,loading:favoriteLoading}=useFetch(()=>appWriteServices
 
 
 
-//tracking user session 
+//adding movie with userId
 const handleMovieAdd=async()=>{
     try {
       const userId = await AsyncStorage.getItem('userId');
@@ -55,8 +54,7 @@ const handleMovieAdd=async()=>{
       if (userId) {
         console.log("User is logged in:", userId);
      if (movie !== null) {
-       appWriteServices.saveSingleMovie(movie,userId)
-       setIsFavorite(true); 
+       appWriteServices.saveFavoriteMovie(movie,userId)
         }
      
       } else {
@@ -70,9 +68,12 @@ const handleMovieAdd=async()=>{
 
 }
 
+//
 
+const handleMovieRemove=()=>{
+appWriteServices.deleteFavoriteMovie(Number(id));
 
-
+}
 
 
   if (loading || favoriteLoading)
@@ -117,7 +118,7 @@ const handleMovieAdd=async()=>{
            </View>
 
               {
-              (favoriteMovies &&  favoriteMovies?.length >0)  ? (<TouchableOpacity onPress={()=>{}} activeOpacity={0.4}>
+              (favoriteMovies &&  favoriteMovies?.length >0)  ? (<TouchableOpacity onPress={handleMovieRemove} activeOpacity={0.4}>
                 <Text className="text-accent  font-bold text-4xl p-2 " >-</Text>
               </TouchableOpacity> ) : (<TouchableOpacity onPress={handleMovieAdd} activeOpacity={0.4}>
                 <Text className="text-accent  font-bold text-4xl p-2" >+</Text>

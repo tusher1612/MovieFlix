@@ -5,6 +5,7 @@ import { Alert } from 'react-native';
 
 import {Client,Databases, ID, Query,Account} from 'react-native-appwrite'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 
 
 const DATABASE_ID=process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
@@ -64,19 +65,19 @@ const loginUser = async (email: string, password: string) => {
 
 
 //favorite movies 
-const saveSingleMovie = async ( movie: MovieDetails,userId:string) => {
+const saveFavoriteMovie = async ( movie: MovieDetails,userId:string) => {
   try {
       const result = await database.listDocuments(DATABASE_ID, FAVORITE_MOVIE_COLLECTION_ID, [
       Query.equal('userId', userId),
       Query.equal('movie_id',movie.id)
     ]);
-    if (result){
+    if (!result){
    Alert.alert(
   "Already Added",
   "This movie is already in your favorites list.",
   [{ text: "OK", style: "default" }]
 );
-console.log("saveSingleMovie:",result)
+console.log("saveFavoriteMovie:",result)
     }
     else {
             await database.createDocument(DATABASE_ID, FAVORITE_MOVIE_COLLECTION_ID, ID.unique(), {
@@ -90,6 +91,7 @@ console.log("saveSingleMovie:",result)
   "The movie has been saved to your favorites.",
   [{ text: "OK", style: "default" }]
 );
+router.replace(`/movie/${movie.id}`)
     }
     }
    catch (error) {
@@ -151,6 +153,50 @@ const findMovie = async (movieId: number): Promise<FavoriteMovie[]| undefined> =
   }
 };
 
+//Delete favorite movie
+const deleteFavoriteMovie = async (movieId: number): Promise<void> => {
+  try {
+    const userId = await AsyncStorage.getItem("userId");
+
+    if (!userId) {
+      console.warn("No userId found in AsyncStorage.");
+      return;
+    }
+
+    // First, find the document(s) matching the criteria
+    const result = await database.listDocuments(
+      DATABASE_ID,
+      FAVORITE_MOVIE_COLLECTION_ID,
+      [
+        Query.equal("userId", userId),
+        Query.equal("movie_id", movieId),
+      ]
+    );
+
+    // If one or more matching documents found, delete them
+    if (result.documents.length > 0) {
+      for (const doc of result.documents) {
+        await database.deleteDocument(
+          DATABASE_ID,
+          FAVORITE_MOVIE_COLLECTION_ID,
+          doc.$id
+        );
+        console.log(`Deleted document with ID: ${doc.$id}`);
+        router.replace(`/movie/${movieId}`)
+      }
+      Alert.alert("Success", "Movie removed from favorites.");
+    } else {
+      Alert.alert("Info", "Movie not found in favorites.");
+    }
+  } catch (error) {
+    console.error("deleteFavoriteMovie error:", error);
+    Alert.alert(
+      "Error",
+      "Something went wrong while removing the movie from favorites.",
+      [{ text: "OK", style: "destructive" }]
+    );
+  }
+};
 
 
 
@@ -210,8 +256,9 @@ export const  appWriteServices={
   registerUser,
   UpdateSearchTerm,
    getAllTrendingMovies,
-saveSingleMovie,
-findMovie
+saveFavoriteMovie,
+findMovie,
+deleteFavoriteMovie
 }
 
 
