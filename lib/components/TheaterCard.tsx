@@ -11,7 +11,7 @@ const TheaterCard = ({ lat,lon ,tags}: OSMElement) => {
 
 {lat && lon && (
  <MapView
-          style={{ width: Dimensions.get('window').width - 40, height: 200, marginBottom: 10,paddingBottom:20 }}
+          style={{ width: Dimensions.get('window').width - 40, height: 200, marginBottom: 10,paddingBottom:20,borderRadius:15 }}
           initialRegion={{
             latitude: lat,
             longitude: lon,
