@@ -13,7 +13,7 @@ const NavigationTab = ({ focused, navTitle, icon }: Props) => {
 
   if (focused) {
     return (
-      <View>
+      <View >
         <ImageBackground
           source={images.highlight}
           className="flex flex-row justify-center items-center w-full min-w-[112px] min-h-16 mt-4 rounded-full overflow-hidden"
