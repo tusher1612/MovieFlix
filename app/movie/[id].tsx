@@ -44,8 +44,6 @@ const Details = () => {
 const{data:favoriteMovies,loading:favoriteLoading}=useFetch(()=>appWriteServices.findMovie(Number(id)));
 
 
-
-
 //adding movie with userId
 const handleMovieAdd=async()=>{
     try {

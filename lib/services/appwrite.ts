@@ -82,15 +82,11 @@ console.log("saveFavoriteMovie:",result)
     else {
             await database.createDocument(DATABASE_ID, FAVORITE_MOVIE_COLLECTION_ID, ID.unique(), {
         title: movie.title,
-        poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+        poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
          movie_id: movie.id,
          userId:userId
       });
-  Alert.alert(
-  "Success",
-  "The movie has been saved to your favorites.",
-  [{ text: "OK", style: "default" }]
-);
+
 router.replace(`/movie/${movie.id}`)
     }
     }
@@ -153,8 +149,52 @@ const findMovie = async (movieId: number): Promise<FavoriteMovie[]| undefined> =
   }
 };
 
+
+//get all favorite movie 
+const getAllFavoriteMovie = async (): Promise<FavoriteMovie[]| undefined> => {
+  try {
+    const userId = await AsyncStorage.getItem('userId');
+
+    if (!userId) {
+      console.warn("No userId found in AsyncStorage.");
+      return []; 
+    }
+
+    const result = await database.listDocuments(
+      DATABASE_ID,
+      FAVORITE_MOVIE_COLLECTION_ID,
+      [
+        Query.equal('userId', userId)
+      ]
+    );
+    console.log("Favorite Movie list");
+    console.log("Result:", JSON.stringify(result.documents, null, 2));
+
+    return result.documents as unknown as FavoriteMovie[]
+  } catch (error) {
+    Alert.alert(
+      "Error",
+      "Something went wrong while checking your favorites.",
+      [
+        {
+          text: "OK",
+          style: "destructive",
+        },
+      ]
+    );
+    
+    console.error("findMovie error:", error); 
+    return []; 
+  }
+};
+
+
+
+
+
+
 //Delete favorite movie
-const deleteFavoriteMovie = async (movieId: number): Promise<void> => {
+const deleteFavoriteMovie = async (movieId: number,flag?:string): Promise<void> => {
   try {
     const userId = await AsyncStorage.getItem("userId");
 
@@ -182,7 +222,14 @@ const deleteFavoriteMovie = async (movieId: number): Promise<void> => {
           doc.$id
         );
         console.log(`Deleted document with ID: ${doc.$id}`);
-        router.replace(`/movie/${movieId}`)
+        if(flag==='profile')
+        {
+      router.replace(`/profile`)
+        }
+        else {
+      router.replace(`/movie/${movieId}`)
+        }
+  
       }
       Alert.alert("Success", "Movie removed from favorites.");
     } else {
@@ -258,6 +305,7 @@ export const  appWriteServices={
    getAllTrendingMovies,
 saveFavoriteMovie,
 findMovie,
+getAllFavoriteMovie,
 deleteFavoriteMovie
 }
 

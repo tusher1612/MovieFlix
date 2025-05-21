@@ -19,7 +19,7 @@ interface Movie {
 interface FavoriteMovie {
   title: string;
   movie_id: number;
-  poster_url: string;
+  poster_path: string;
   userId: string;
   $id: string;
   $createdAt: string;

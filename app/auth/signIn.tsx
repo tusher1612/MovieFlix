@@ -18,13 +18,9 @@ export default function SingIn() {
      if (result){
          await AsyncStorage.setItem('userId', $id);
          await AsyncStorage.setItem('userName',name);
- Alert.alert(
-  "Login Successful",
-  "You have been logged in successfully.",
-  [{ text: "OK", style: "default" }]
-);
 
-   router.replace("/profile")
+
+   router.replace("/")
      }
    
   
