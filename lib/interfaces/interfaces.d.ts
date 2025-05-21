@@ -29,7 +29,23 @@ interface FavoriteMovie {
   $collectionId: string;
 }
 
+ interface OSMElement {
+  type: 'node' | 'way' | 'relation';
+  id: number;
+  lat?: number;
+  lon?: number;
+  tags: Tags;
+}
 
+ interface Tags {
+  [key: string]: string;
+  amenity?: string;
+  name?: string;
+  'name:en'?: string;
+  'name:bn'?: string;
+  'addr:city'?: string;
+  'addr:street'?: string;
+}
 
 interface TrendingMovie {
   searchTerm: string;
@@ -106,3 +122,4 @@ interface TrendingMovieArticle {
   article_uri: string;
   pfd_uri: string;
 }
+

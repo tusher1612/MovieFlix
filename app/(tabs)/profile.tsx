@@ -1,4 +1,4 @@
-import { View, Text ,Image, TextInput,TouchableOpacity,FlatList, ActivityIndicator} from 'react-native'
+import { View, Text ,Image, TextInput,TouchableOpacity,FlatList, ActivityIndicator, ScrollView} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'expo-router'
 import { images } from "@/lib/constants/images";
@@ -8,6 +8,7 @@ import useFetch from '@/lib/custom-hooks/useFetch';
 import { appWriteServices } from '@/lib/services/appwrite';
 import MovieCard from '@/lib/components/MovieCard';
 import ProfileMovieCard from '@/lib/components/ProfileMovieCard';
+import TheaterNearUser from '@/lib/components/TheaterNearUser';
 
 
 export default function Profile() {
@@ -46,8 +47,8 @@ const handleLogOut = async ()=>{
 }
 
   return (
-    <View
-    className="h-screen bg-primary "
+    <ScrollView
+    className="flex-1 bg-primary "
     >
 
       <Image
@@ -74,9 +75,6 @@ const handleLogOut = async ()=>{
 <Image source={icons.logout}  />
   </TouchableOpacity>
  </View>
-
-  <View className='w-full '>
-
 <Text className="text-lg text-white font-bold mb-3">Favorite Movies</Text>
         <FlatList
                 data={favoriteMovie}
@@ -92,14 +90,20 @@ const handleLogOut = async ()=>{
                
               />
 
+              <View className='mt-10 relative'>
+            <TheaterNearUser/>
+      
+
+              </View>
+
+
   </View>
-  </View>
 
 
 
 
 
 
-    </View>
+    </ScrollView>
   )
 }

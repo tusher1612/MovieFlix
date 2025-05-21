@@ -194,7 +194,7 @@ const getAllFavoriteMovie = async (): Promise<FavoriteMovie[]| undefined> => {
 
 
 //Delete favorite movie
-const deleteFavoriteMovie = async (movieId: number,flag?:string): Promise<void> => {
+const deleteFavoriteMovie = async (movieId: number,screenFlag?:string): Promise<void> => {
   try {
     const userId = await AsyncStorage.getItem("userId");
 
@@ -222,7 +222,7 @@ const deleteFavoriteMovie = async (movieId: number,flag?:string): Promise<void> 
           doc.$id
         );
         console.log(`Deleted document with ID: ${doc.$id}`);
-        if(flag==='profile')
+        if(screenFlag==='profile')
         {
       router.replace(`/profile`)
         }
