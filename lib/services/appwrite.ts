@@ -129,8 +129,7 @@ const findMovie = async (movieId: number): Promise<FavoriteMovie[]| undefined> =
       ]
     );
 
-    console.log("Result:", JSON.stringify(result.documents, null, 2));
-    console.log("Movie found");
+   
     return result.documents as unknown as FavoriteMovie[]
   } catch (error) {
     Alert.alert(
@@ -167,8 +166,7 @@ const getAllFavoriteMovie = async (): Promise<FavoriteMovie[]| undefined> => {
         Query.equal('userId', userId)
       ]
     );
-    console.log("Favorite Movie list");
-    console.log("Result:", JSON.stringify(result.documents, null, 2));
+  
 
     return result.documents as unknown as FavoriteMovie[]
   } catch (error) {

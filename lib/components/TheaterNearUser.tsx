@@ -33,7 +33,7 @@ useEffect(() => {
 
   return (
     <View className=' mt-4'>
-      <Text className='text-lg text-white font-bold mb-3'>Theater Near You</Text>
+      <Text className='text-lg text-white font-bold mb-3'>Nearby Theaters</Text>
       {
         theaterList && (
      <FlatList
