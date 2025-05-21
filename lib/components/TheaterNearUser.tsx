@@ -31,9 +31,6 @@ useEffect(() => {
   })();
 }, []);
 
-
-console.log ("Location:",location)
-
   return (
     <View className=' mt-4'>
       <Text className='text-lg text-white font-bold mb-3'>Theater Near You</Text>

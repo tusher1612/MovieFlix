@@ -77,7 +77,7 @@ const saveFavoriteMovie = async ( movie: MovieDetails,userId:string) => {
   "This movie is already in your favorites list.",
   [{ text: "OK", style: "default" }]
 );
-console.log("saveFavoriteMovie:",result)
+
     }
     else {
             await database.createDocument(DATABASE_ID, FAVORITE_MOVIE_COLLECTION_ID, ID.unique(), {
